@@ -28,7 +28,7 @@ function increasePointsForRandomPerson(range, player) {
 function adjustLeaderBoardData() {
     const randomIndex = Math.floor(Math.random() * mockData.length);
     increasePointsForRandomPerson(pointRangeToAdd, mockData[randomIndex]);
-    mockData.sort((a, b) => a.score - b.score);
+    mockData.sort((a, b) => b.score - a.score);
 }
 function showLeaderboard() {
     adjustLeaderBoardData();
