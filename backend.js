@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+let mockData;
+let data;
+const pointRangeToAdd = 1000;
 function fetchData() {
     return __awaiter(this, void 0, void 0, function* () {
         const res = yield fetch("https://webcdn.17app.co/campaign/pretest/data.json");
@@ -15,31 +18,20 @@ function fetchData() {
         return data;
     });
 }
-let mockData;
 (() => __awaiter(void 0, void 0, void 0, function* () {
     mockData = yield fetchData();
 }))();
-function callBack() {
-    console.log(mockData);
-}
-setTimeout(callBack, 100);
-function sortPlayersByScore(players) {
-    players.sort((a, b) => a.score - b.score);
-}
 function increasePointsForRandomPerson(range, player) {
     const randomPoints = Math.floor(Math.random() * range);
     player.score += randomPoints;
-    console.log(`Increased ${player.displayName}'s score by ${randomPoints} points.`);
 }
-const pointRangeToAdd = 1000;
 function adjustLeaderBoardData() {
     const randomIndex = Math.floor(Math.random() * mockData.length);
     increasePointsForRandomPerson(pointRangeToAdd, mockData[randomIndex]);
-    sortPlayersByScore(mockData);
-    console.log(mockData);
+    mockData.sort((a, b) => a.score - b.score);
 }
-// setInterval(adjustLeaderBoardData, 2000);
 function showLeaderboard() {
+    adjustLeaderBoardData();
     const childNodes = document.querySelectorAll("div.playerCard");
     let i = 0;
     const length = childNodes.length;
@@ -50,11 +42,9 @@ function showLeaderboard() {
         picture.src = mockData[i].picture;
         displayName.innerHTML = mockData[i].displayName;
         score.innerHTML = mockData[i].score.toString();
-        console.log({ picture, displayName, score });
     }
 }
 function test() {
-    adjustLeaderBoardData();
     showLeaderboard();
 }
-setInterval(test, 1000);
+setInterval(test, 500);
